@@ -1,18 +1,23 @@
 library(shiny)
 
-shinyUI(pageWithSidebar(
-  headerPanel("hp"),
-  sidebarPanel(
-    h1('sp'),
-    h1('11'),
-    h2('22'),
-    h3('33'),
-    h4('44')
-  ),
-  mainPanel(
-    h3('mp text'),
-    code('smoething'),
-    p('here is a p')
+shinyUI(fluidPage(
+
+  # Application title
+  titlePanel("xxxxHello Shiny!"),
+
+  # Sidebar with a slider input for the number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
   )
-)
-)
+))
