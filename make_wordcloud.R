@@ -1,4 +1,5 @@
 #http://www.r-bloggers.com/building-wordclouds-in-r/
+# i should add a timer here
 
 library(tm)
 library(SnowballC)
