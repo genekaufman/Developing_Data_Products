@@ -1,6 +1,6 @@
 library(shiny)
 
-texts<-read.csv("../wordcloud_texts.csv")
+texts<-read.csv("wordcloud_texts.csv")
 
 textFiles <- as.character(texts$Filename)
 names(textFiles)<- as.character( paste(texts$DocumentName,'-',texts$YearPublished))

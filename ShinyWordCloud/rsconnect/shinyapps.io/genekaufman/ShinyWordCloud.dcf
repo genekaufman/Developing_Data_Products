@@ -1,0 +1,8 @@
+name: ShinyWordCloud
+account: genekaufman
+server: shinyapps.io
+bundleId: 373242
+url: https://genekaufman.shinyapps.io/ShinyWordCloud/
+when: 1455546085.30085
+asMultiple: FALSE
+asStatic: FALSE

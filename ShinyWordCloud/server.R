@@ -1,5 +1,6 @@
 #http://shiny.rstudio.com/tutorial/lesson1/
-
+# UGGGGGHHHHHH http://shiny.rstudio.com/gallery/word-cloud.html
+#
 library(shiny)
 # library(tm)
 # library(SnowballC)
@@ -32,7 +33,7 @@ makeWordCloud <- function(fname) {
   library(SnowballC)
   library(wordcloud)
 
-  thisFile <- paste0("../texts/",fname)
+  thisFile <- paste0("texts/",fname)
 
   thisText <- readLines(thisFile,skipNul = TRUE)
   wcCorpus <- Corpus(VectorSource(thisText))
