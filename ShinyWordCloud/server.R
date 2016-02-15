@@ -8,22 +8,41 @@ library(shiny)
 
 
 shinyServer(function(input, output) {
+#   thisTime<-"please wait"
+#   globTime<- reactive(thisTime)
+#   waitMessage<-"please wait"
 
-  globTime<-"please wait"
-  waitMessage<-"please wait"
 
-
-    output$caption <- renderText({
-    input$text2wc
-  })
-
+#     output$caption <- renderText({
+#     input$txtSrc
+#   })
+#   output$txtSrc <- renderText({
+#     input$text2wc
+#     isolate(getFileInfo())
+#   })
+  getFileInfo()
   output$wcloud <- renderPlot({
-    thisTime<-timeWordCloud(input$text2wc,FALSE)
-    globTime<<-thisTime
+#    thisTime<-timeWordCloud(input$text2wc,FALSE)
+#    doit <- getFileInfo()
+#    if (input$action > 0) {
+    input$action
+      isolate(makeWordCloud(input$text2wc))
+#    }
+ #   globTime<<-thisTime
   })
 
-  output$statusMessage <-  renderText({paste("Generation time:",globTime
-  )})
+#  doit <- getFileInfo()
+
+  getFileInfo <- reactive({
+    thisOne <- input$text2wc
+    output$txtSrc <- renderText(thisOne)
+    output$txtUrl <- renderText(thisOne)
+    output$txtYear <- renderText(thisOne)
+    output$txtSize <- renderText(thisOne)
+  })
+
+
+
 
 })
 

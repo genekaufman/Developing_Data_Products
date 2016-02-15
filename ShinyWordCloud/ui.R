@@ -14,14 +14,17 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
     sidebarPanel(
-      selectInput("text2wc", "File:",textFiles, width='600px')
+      selectInput("text2wc", "File:",textFiles, width='600px'),
+      actionButton("action","Generate!")
  #     selectInput()
     ),
 
     mainPanel(
-      h3(textOutput("caption")),
-      plotOutput("wcloud"),
-      h4(textOutput("statusMessage"))
+      h3(textOutput("txtSrc")),
+      h4(textOutput("txtUrl")),
+      h4(textOutput("txtYear")),
+      h4(textOutput("txtSize")),
+      plotOutput("wcloud")
 
     )
   )
