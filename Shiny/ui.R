@@ -1,23 +1,28 @@
 library(shiny)
 
+texts<-read.csv("../wordcloud_texts.csv")
+
+textFiles <- as.character(texts$Filename)
+names(textFiles)<- as.character( paste(texts$DocumentName,'-',texts$YearPublished))
+
+
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("xxxxHello Shiny!"),
+  titlePanel("WordCloud Generator"),
 
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      selectInput("text2wc", "File:",textFiles, width='600px')
+ #     selectInput()
     ),
 
-    # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      h3(textOutput("caption")),
+      plotOutput("wcloud"),
+      h4(textOutput("statusMessage"))
+
     )
   )
 ))
