@@ -1,52 +1,30 @@
-#http://shiny.rstudio.com/tutorial/lesson1/
-# UGGGGGHHHHHH http://shiny.rstudio.com/gallery/word-cloud.html
-#
 library(shiny)
-# library(tm)
-# library(SnowballC)
-# library(wordcloud)
 
+texts<-read.csv("wordcloud_texts.csv")
+textFiles <- as.character(texts$Filename)
 
 shinyServer(function(input, output) {
-#   thisTime<-"please wait"
-#   globTime<- reactive(thisTime)
-#   waitMessage<-"please wait"
 
+  output$txtSrc <- renderText({as.character(texts[which(texts$Filename==input$text2wc),1])})
+#   hold4now <- reactive(
+#     fullText <- as.character(texts[which(texts$Filename==input$text2wc),1])
+#   )
 
-#     output$caption <- renderText({
-#     input$txtSrc
-#   })
-#   output$txtSrc <- renderText({
-#     input$text2wc
-#     isolate(getFileInfo())
-#   })
-  getFileInfo()
-  output$wcloud <- renderPlot({
-#    thisTime<-timeWordCloud(input$text2wc,FALSE)
-#    doit <- getFileInfo()
-#    if (input$action > 0) {
-    input$action
-      isolate(makeWordCloud(input$text2wc))
-#    }
- #   globTime<<-thisTime
+    output$wcloud <- renderPlot({
+    if (input$action > 0) {
+      input$action
+      isolate(makeWordCloud(input$text2wc,
+                          maxwords = input$maxWords,
+                          stemming = input$doStemming,
+                          cPal = input$colorPal))
+    }
   })
-
-#  doit <- getFileInfo()
-
-  getFileInfo <- reactive({
-    thisOne <- input$text2wc
-    output$txtSrc <- renderText(thisOne)
-    output$txtUrl <- renderText(thisOne)
-    output$txtYear <- renderText(thisOne)
-    output$txtSize <- renderText(thisOne)
-  })
-
-
-
 
 })
 
-makeWordCloud <- function(fname) {
+makeWordCloud <- function(fname,maxwords=100,stemming=FALSE,cPal=NULL) {
+  ## Implement wordcloud method described in
+  ## http://www.r-bloggers.com/building-wordclouds-in-r/
 
   library(tm)
   library(SnowballC)
@@ -65,22 +43,16 @@ makeWordCloud <- function(fname) {
   wcCorpus <- tm_map(wcCorpus, removeWords, stopwords('english'))
 
   #Next, we will perform stemming. This means that all the words are converted to their stem (Ex: learning -> learn, walked -> walk, etc.). This will ensure that different forms of the word are converted to the same form and plotted only once in the wordcloud.
-  #wcCorpus <- tm_map(wcCorpus, stemDocument)
+  if (stemming) {
+    wcCorpus <- tm_map(wcCorpus, stemDocument)
+  }
   #Now, we will plot the wordcloud.
 
-  wordcloud(wcCorpus, max.words = 100, random.order = FALSE)
-  #wc
-}
-
-timeWordCloud<-function(fname,useMS) {
-  start.time <- Sys.time()
-  makeWordCloud(fname)
-  end.time <- Sys.time()
-  elapsedTime <- end.time - start.time
-  if (useMS) {
-    time.taken <- paste( as.numeric(round(elapsedTime,3)*1000), "milliseconds")
+  if (cPal != "None (Black)") {
+    pal <- brewer.pal(8,cPal)
+    pal <- pal[-(1)]
   } else {
-    time.taken <- paste( as.numeric(round(elapsedTime,3)), "seconds")
+    pal <- NULL
   }
-  time.taken
+  wordcloud(wcCorpus, max.words = maxwords, random.order = FALSE, colors=pal)
 }
